@@ -143,6 +143,39 @@
   body.flat .field, body.flat .cell, body.flat .btn { background: #0f1b33; }
   body.flat .cell.done { background: var(--done); }
 
+  /* 色合い案（?pal=1〜10）：地はベタ1色、白い角丸パネル、グロー・グラデーションなし */
+  body.pal-1 { --bg: #f7c6d3; --gtext: #4a2233; --gsub: #7a3a52; --panel: #ffffff; --text: #4a2233; --muted: #7d5566; --acc: #c8396a; --onacc: #ffffff; --cell: #fdeef3; --done: #f27a9e; --done-text: #3d0f20; --field: #fdeef3; --bar: #fbdbe5; }
+  body.pal-2 { --bg: #a5e6d6; --gtext: #14403a; --gsub: #2a5e55; --panel: #ffffff; --text: #16353a; --muted: #4f6b6e; --acc: #137a6b; --onacc: #ffffff; --cell: #e8f8f3; --done: #3ccfae; --done-text: #05332a; --field: #e8f8f3; --bar: #d2f2ea; }
+  body.pal-3 { --bg: #e3b33c; --gtext: #1b2a4a; --gsub: #3a3a3a; --panel: #ffffff; --text: #1b2a4a; --muted: #5a6478; --acc: #1b2a4a; --onacc: #ffffff; --cell: #fbf3dd; --done: #1b2a4a; --done-text: #ffffff; --field: #fbf3dd; --bar: #f3e3b5; }
+  body.pal-4 { --bg: #d2c4f5; --gtext: #2e2457; --gsub: #4d4280; --panel: #ffffff; --text: #2e2457; --muted: #625a85; --acc: #6a4bc8; --onacc: #ffffff; --cell: #f2edfd; --done: #9b7cf0; --done-text: #1c1040; --field: #f2edfd; --bar: #e5dcfa; }
+  body.pal-5 { --bg: #a6d8f7; --gtext: #123250; --gsub: #2b4e70; --panel: #ffffff; --text: #16324e; --muted: #536a82; --acc: #1f6fbf; --onacc: #ffffff; --cell: #eaf5fd; --done: #4fa8ef; --done-text: #0a2540; --field: #eaf5fd; --bar: #d4ebfb; }
+  body.pal-6 { --bg: #f4ece0; --gtext: #4a3a2a; --gsub: #6e5a46; --panel: #ffffff; --text: #4a3a2a; --muted: #7a6a5a; --acc: #be3d61; --onacc: #ffffff; --cell: #faf5ee; --done: #f59ab2; --done-text: #4a1426; --field: #faf5ee; --bar: #efe4d4; }
+  body.pal-7 { --bg: #f4ece0; --gtext: #2e3b37; --gsub: #56625e; --panel: #ffffff; --text: #2e3b37; --muted: #66726e; --acc: #1b8573; --onacc: #ffffff; --cell: #faf5ee; --done: #5fd3b4; --done-text: #08332a; --field: #faf5ee; --bar: #efe4d4; }
+  body.pal-8 { --bg: #1b2a4a; --gtext: #ffffff; --gsub: #c9d3ea; --panel: #26385e; --text: #ffffff; --muted: #c0cbe3; --acc: #ffb3c8; --onacc: #3a1424; --cell: #1f3050; --done: #ffd166; --done-text: #3a2a00; --field: #1f3050; --bar: #1f3050; }
+  body.pal-9 { --bg: #ffcdb0; --gtext: #4a2a1a; --gsub: #704530; --panel: #ffffff; --text: #4a2a1a; --muted: #7d5c4c; --acc: #b84c1a; --onacc: #ffffff; --cell: #fff2ea; --done: #ff9d6c; --done-text: #3d1606; --field: #fff2ea; --bar: #ffe2d2; }
+  body.pal-10 { --bg: #cdeb98; --gtext: #24361a; --gsub: #45592f; --panel: #ffffff; --text: #24361a; --muted: #5b6b4c; --acc: #437a14; --onacc: #ffffff; --cell: #f2fae6; --done: #8fd14f; --done-text: #1a2c06; --field: #f2fae6; --bar: #e3f4c8; }
+  body.pal { background: var(--bg); color: var(--text); }
+  body.pal .top { border-bottom: none; }
+  body.pal .brand, body.pal h1 { text-shadow: none; color: var(--gtext); }
+  body.pal .me, body.pal .eyebrow, body.pal .lead, body.pal h1 small { color: var(--gsub); }
+  body.pal .eyebrow { color: var(--gtext); }
+  body.pal .btn { background: var(--panel); color: var(--text); border: none; }
+  body.pal .btn-primary { background: var(--acc); color: var(--onacc); box-shadow: none; }
+  body.pal .card { background: var(--panel); border: none; box-shadow: none; }
+  body.pal .gate .card { background: var(--panel); }
+  body.pal .gate .eyebrow { color: var(--acc); }
+  body.pal .gate h2 { color: var(--text); }
+  body.pal .bar { background: var(--bar); }
+  body.pal .bar i { box-shadow: none; }
+  body.pal .field { background: var(--field); border: 2px solid transparent; color: var(--text); }
+  body.pal .field:focus { border-color: var(--acc); }
+  body.pal .row { border-bottom-color: var(--bar); }
+  body.pal .row.final { border-top-color: var(--bar); }
+  body.pal .cell { background: var(--cell); border: none; color: var(--muted); }
+  body.pal .cell.done { background: var(--done); color: var(--done-text); box-shadow: none; }
+  body.pal .sync { background: var(--panel); border: none; }
+  body.pal .gate { background: rgba(0, 0, 0, .4); }
+
   @media (max-width: 760px) {
     .top { padding: 14px 16px; }
     .me .label { display: none; }
@@ -158,7 +191,7 @@
   }
 </style>
 </head>
-<body>
+<body class="pal pal-7">
 <header class="top">
   <div class="brand">テストツクール</div>
   <div class="me"><span class="label" id="meName"></span><button class="btn" id="btnName" type="button">名前を変える</button></div>
@@ -237,7 +270,11 @@ let pass = ls('tt_pass');
 let pending = 0;
 
 const params = new URLSearchParams(location.search);
-if (params.get('look') === 'b') document.body.classList.add('flat');
+// 標準は色合い7（生成り×ミント）。?look=a は前の光る見た目、?look=b はフラット、?pal=1〜10 は色合いの比較用
+const look = params.get('look'), pal = params.get('pal');
+if (look === 'a' || look === 'b' || /^([1-9]|10)$/.test(pal || '')) document.body.className = '';
+if (look === 'b') document.body.classList.add('flat');
+if (/^([1-9]|10)$/.test(pal || '')) document.body.classList.add('pal', 'pal-' + pal);
 // ?demo=1 は見た目を見るための見本。サーバーにはつながず、何も保存しない
 const DEMO = params.get('demo') === '1';
 const DEMO_STATE = {
