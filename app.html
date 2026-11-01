@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>テストツクール　2学期期末テスト（理科）</title>
+<meta property="og:title" content="テストツクール　2学期期末テスト（理科）">
+<meta property="og:description" content="定期テストの作成日程を、担当の先生どうしで入力して共有するチェック表">
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #040b17;
+    --panel: rgba(14, 30, 54, .72);
+    --line: rgba(95, 212, 255, .26);
+    --line-soft: rgba(95, 212, 255, .12);
+    --acc: #5fd4ff;
+    --acc2: #2c7bff;
+    --text: #eaf4ff;
+    --muted: #8fa8c2;
+    --done: #33e0b0;
+    --done-text: #032a1f;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    background: radial-gradient(1100px 560px at 65% -8%, #0e2c52 0%, transparent 62%), var(--bg);
+    color: var(--text);
+    font-family: "Zen Maru Gothic", sans-serif; font-weight: 500;
+    font-size: 15px; line-height: 1.6;
+  }
+  button, input, textarea { font: inherit; color: inherit; }
+  .en { font-family: "Orbitron", sans-serif; letter-spacing: .14em; }
+
+  /* ヘッダー */
+  .top {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 40px; border-bottom: 1px solid var(--line-soft);
+  }
+  .brand { font-weight: 900; font-size: 20px; text-shadow: 0 0 18px rgba(95, 212, 255, .45); }
+  .me { display: flex; align-items: center; gap: 14px; color: var(--muted); font-size: 14px; }
+  .btn {
+    border: 1px solid var(--line); background: #0b1729;
+    border-radius: 12px; padding: 8px 16px; cursor: pointer; font-weight: 700;
+    transition: transform .08s;
+  }
+  .btn:active { transform: translateY(4px); }
+  .btn-primary {
+    border: none; background: linear-gradient(135deg, #1fa8ff, var(--acc2)); color: #fff;
+    box-shadow: 0 0 22px rgba(44, 140, 255, .45);
+  }
+
+  /* 本体 */
+  .page { max-width: 1080px; margin: 0 auto; padding: 40px 40px 80px; }
+  .eyebrow { color: var(--acc); font-size: 11.5px; font-weight: 800; margin: 0 0 10px; }
+  h1 {
+    margin: 0; font-weight: 900; font-size: 40px; line-height: 1.25;
+    text-shadow: 0 0 28px rgba(95, 212, 255, .3);
+  }
+  h1 small { font-size: 22px; font-weight: 700; color: var(--muted); margin-left: 10px; text-shadow: none; }
+  .lead { color: var(--muted); margin: 10px 0 28px; }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, .35), inset 0 0 50px rgba(95, 212, 255, .04);
+  }
+
+  /* 学年カード */
+  .grades { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 26px; }
+  .grade { padding: 18px 20px 20px; }
+  .grade .head { display: flex; align-items: baseline; justify-content: space-between; }
+  .grade .g { font-weight: 900; font-size: 26px; }
+  .grade .when { color: var(--muted); font-size: 13px; }
+  .bar { height: 8px; border-radius: 99px; background: rgba(255, 255, 255, .07); margin: 12px 0 6px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--done); box-shadow: 0 0 14px rgba(51, 224, 176, .7); transition: width .3s; }
+  .count { font-size: 12px; color: var(--muted); }
+  .count b { font-family: "Orbitron", sans-serif; color: var(--text); font-size: 15px; margin-right: 2px; }
+  .who { display: grid; grid-template-columns: auto 1fr; gap: 8px 10px; align-items: center; margin-top: 12px; font-size: 13px; color: var(--muted); }
+  .field {
+    width: 100%; border: 1px solid var(--line-soft); background: rgba(3, 10, 22, .7);
+    border-radius: 10px; padding: 7px 10px; color: var(--text);
+  }
+  .field:focus { outline: none; border-color: var(--acc); }
+
+  /* 日程の表 */
+  .steps { padding: 6px 0; margin-bottom: 26px; }
+  .row {
+    display: grid; grid-template-columns: 100px minmax(170px, 1fr) repeat(3, minmax(96px, 150px)); gap: 12px;
+    align-items: center; padding: 12px 20px; border-bottom: 1px solid var(--line-soft);
+  }
+  .row:last-child { border-bottom: none; }
+  .row.headrow { color: var(--acc); font-size: 11.5px; font-weight: 800; padding-top: 14px; padding-bottom: 10px; }
+  .row.headrow span:nth-child(n+3) { text-align: center; }
+  .row.final { border-top: 1px solid var(--line); }
+  .date { font-weight: 700; font-size: 14px; }
+  .what b { display: block; font-weight: 900; font-size: 16px; }
+  .what small { display: block; color: var(--muted); font-size: 11.5px; line-height: 1.5; }
+  .cell {
+    height: 58px; border: 1px dashed rgba(143, 168, 194, .35); border-radius: 14px;
+    background: #0b1729; cursor: pointer; color: var(--muted);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+    font-size: 12px; line-height: 1.35; transition: transform .08s, background .15s;
+  }
+  .cell:hover { border-color: var(--acc); }
+  .cell:active { transform: translateY(4px); }
+  .cell .gl { display: none; font-weight: 700; }
+  .cell .mark { font-weight: 900; font-size: 15px; }
+  .cell.done {
+    border: none; background: var(--done); color: var(--done-text);
+    box-shadow: 0 0 20px rgba(51, 224, 176, .45);
+  }
+
+  /* 下の2枚 */
+  .bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .bottom .card { padding: 18px 20px; }
+  .bottom h2 { margin: 0 0 8px; font-size: 16px; font-weight: 900; }
+  .points ul { margin: 0; padding-left: 1.2em; color: var(--muted); font-size: 14px; }
+  textarea.field { min-height: 120px; resize: vertical; line-height: 1.6; }
+
+  .sync { position: fixed; right: 18px; bottom: 16px; font-size: 12px; color: var(--muted);
+    background: rgba(4, 11, 23, .85); border: 1px solid var(--line-soft); border-radius: 99px; padding: 6px 14px; }
+  .sync.err { color: #ff8a8a; border-color: rgba(255, 138, 138, .4); }
+
+  /* はじめの画面 */
+  .gate { position: fixed; inset: 0; background: rgba(2, 6, 14, .82); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 10; }
+  .gate.on { display: flex; }
+  .gate .card { width: 100%; max-width: 420px; padding: 28px; background: #0b1a30; }
+  .gate h2 { margin: 0 0 6px; font-size: 28px; font-weight: 900; }
+  .gate p.muted { color: var(--muted); margin: 0 0 18px; font-size: 14px; }
+  .gate label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+  .gate label .field { margin-top: 6px; padding: 10px 12px; }
+  .gate .btn-primary { width: 100%; padding: 12px; font-size: 16px; }
+  .gate .msg { color: #ff8a8a; font-size: 13px; min-height: 1.4em; margin: 0 0 8px; }
+
+  /* 見た目B：暗い地・フラット（グロー・グラデーションなし） */
+  body.flat { background: #0f1b33; }
+  body.flat .card { background: #1b2a4a; border-color: transparent; box-shadow: none; }
+  body.flat .gate .card { background: #1b2a4a; }
+  body.flat .brand, body.flat h1 { text-shadow: none; }
+  body.flat .btn-primary { background: var(--acc2); box-shadow: none; }
+  body.flat .bar i, body.flat .cell.done { box-shadow: none; }
+  body.flat .field, body.flat .cell, body.flat .btn { background: #0f1b33; }
+  body.flat .cell.done { background: var(--done); }
+
+  @media (max-width: 760px) {
+    .top { padding: 14px 16px; }
+    .me .label { display: none; }
+    .page { padding: 26px 16px 70px; }
+    h1 { font-size: 30px; }
+    h1 small { display: block; margin: 4px 0 0; font-size: 18px; }
+    .grades, .bottom { grid-template-columns: 1fr; }
+    .row { grid-template-columns: 1fr 1fr 1fr; padding: 14px 16px; }
+    .row.headrow { display: none; }
+    .date { grid-column: 1 / -1; color: var(--acc); font-size: 13px; }
+    .what { grid-column: 1 / -1; }
+    .cell .gl { display: block; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">テストツクール</div>
+  <div class="me"><span class="label" id="meName"></span><button class="btn" id="btnName" type="button">名前を変える</button></div>
+</header>
+
+<main class="page">
+  <p class="eyebrow en">TEST SCHEDULE / <span id="today"></span></p>
+  <h1>2学期期末テスト<small>理科</small></h1>
+  <p class="lead">自分の学年を作り、相手の学年を確認する。すんだら押す。</p>
+
+  <section class="grades" id="grades"></section>
+  <section class="card steps" id="steps"></section>
+
+  <section class="bottom">
+    <div class="card points">
+      <h2>確認の観点</h2>
+      <ul>
+        <li>誤字</li>
+        <li>難易度（解いて判断）</li>
+        <li>図の大きさ</li>
+        <li>同じ型の問題の重なり</li>
+        <li>答え方の指定</li>
+        <li>下線部・ページの指定</li>
+        <li>問題用紙と解答用紙の配点が合っている</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>メモ</h2>
+      <textarea class="field" id="memo" data-key="memo" maxlength="1000" placeholder="気づいたこと・連絡など"></textarea>
+    </div>
+  </section>
+</main>
+
+<div class="sync" id="sync"></div>
+
+<div class="gate" id="gate">
+  <form class="card" id="gateForm">
+    <p class="eyebrow en">TEST SCHEDULE / ACCESS</p>
+    <h2>はじめに</h2>
+    <p class="muted">入力した人がわかるように、名前を入れてください。</p>
+    <label>名前<input class="field" id="gName" maxlength="20" autocomplete="off" required></label>
+    <label id="gPassWrap">合言葉<input class="field" id="gPass" type="password" autocomplete="off"></label>
+    <p class="msg" id="gMsg"></p>
+    <button class="btn btn-primary" type="submit">入る</button>
+  </form>
+</div>
+
+<script>
+// 保存先（GASのWebアプリのURL）。空のときは、この端末だけに保存するお試し表示になる
+const API = 'https://script.google.com/macros/s/AKfycbzQxZT-NTD0Gq6hN15hXfNi2XN-J-fJo-gjbLhABCToOJq6T_R5bPPphorAbmfC2M5t/exec';
+
+const GRADES = [
+  { k: '7', name: '7年', when: '11/19（木）1限' },
+  { k: '8', name: '8年', when: '11/18（水）1限' },
+  { k: '9', name: '9年', when: '11/20（金）2限' },
+];
+const STEPS = [
+  { d: '10/30（金）', t: '範囲を決める', s: '教科書のページと、どこまで進むかの見込み' },
+  { d: '11/6（金）', t: 'スキャン', s: 'ワーク・小テスト・入試問題' },
+  { d: '11/12（木）', t: 'いったん完成', s: '作成者 → 確認する人に渡す' },
+  { d: '11/13（金）', t: '確認', s: '相手の学年を解いて見る（下の観点）' },
+  { d: '確認の後', t: '直し', s: '確認で出たところを直す' },
+  { d: '前々日', t: 'ルビ版', s: '直した本番版から作る', per: { 7: '11/17（火）', 8: '11/16（月）', 9: '11/18（水）' } },
+  { d: '前々日', t: '印刷', s: '本番版・ルビ版・解答用紙', per: { 7: '11/17（火）', 8: '11/16（月）', 9: '11/18（水）' } },
+  { d: '前々日 16:50', t: '学習室へ渡す', s: '本番版＋ルビ版をセットで', per: { 7: '11/17 16:50', 8: '11/16 16:50', 9: '11/18 16:50' }, final: true },
+];
+
+const $ = (id) => document.getElementById(id);
+const ls = (k) => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+let state = {};
+let me = ls('tt_me');
+let pass = ls('tt_pass');
+let pending = 0;
+
+const params = new URLSearchParams(location.search);
+if (params.get('look') === 'b') document.body.classList.add('flat');
+// ?demo=1 は見た目を見るための見本。サーバーにはつながず、何も保存しない
+const DEMO = params.get('demo') === '1';
+const DEMO_STATE = {
+  'n:7:make': '新井', 'n:7:check': '福本', 'n:8:make': '福本', 'n:8:check': '新井', 'n:9:make': '新井', 'n:9:check': '福本',
+  'c:0:7': { by: '新井', at: '10/28' }, 'c:1:7': { by: '新井', at: '11/5' }, 'c:2:7': { by: '新井', at: '11/11' }, 'c:3:7': { by: '福本', at: '11/13' },
+  'c:0:8': { by: '福本', at: '10/29' }, 'c:1:8': { by: '福本', at: '11/6' }, 'c:2:8': { by: '福本', at: '11/12' },
+  'c:0:9': { by: '新井', at: '10/30' }, 'c:1:9': { by: '新井', at: '11/6' },
+  memo: '9年は実験の図を1つ差しかえ予定。',
+};
+const syncText = () => DEMO ? '見本（保存されません）' : API ? '最新 ' + hhmm() : 'お試し表示（この端末だけに保存）';
+
+const now = new Date();
+$('today').textContent = now.getFullYear() + '.' + String(now.getMonth() + 1).padStart(2, '0') + '.' + String(now.getDate()).padStart(2, '0');
+
+// ---- 保存・読み込み ----
+async function call(body) {
+  if (DEMO) {
+    if (body.op === 'set') { if (body.value === null) delete DEMO_STATE[body.key]; else DEMO_STATE[body.key] = body.value; }
+    return { ok: true, state: Object.assign({}, DEMO_STATE) };
+  }
+  if (!API) {
+    let s = {};
+    try { s = JSON.parse(ls('tt_local') || '{}'); } catch (e) {}
+    if (body.op === 'set') {
+      if (body.value === null) delete s[body.key]; else s[body.key] = body.value;
+      lsSet('tt_local', JSON.stringify(s));
+    }
+    return { ok: true, state: s };
+  }
+  const r = await fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(Object.assign({ pass }, body)),
+  });
+  return r.json();
+}
+
+function showSync(text, err) {
+  const el = $('sync');
+  el.textContent = text;
+  el.classList.toggle('err', !!err);
+}
+const hhmm = () => { const d = new Date(); return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'); };
+
+async function refresh() {
+  if (pending || $('gate').classList.contains('on')) return;
+  try {
+    const res = await call({ op: 'get' });
+    if (!res.ok) { if (res.error === 'pass') openGate('合言葉が変わったようです。入れ直してください。'); return; }
+    if (pending) return;
+    state = res.state || {};
+    render();
+    showSync(syncText());
+  } catch (e) {
+    showSync('つながりません。少しあとでもう一度', true);
+  }
+}
+
+async function save(key, value) {
+  if (value === null || value === '') delete state[key]; else state[key] = value;
+  render();
+  pending++;
+  showSync('保存中…');
+  try {
+    const res = await call({ op: 'set', key, value: value === '' ? null : value });
+    pending--;
+    if (!res.ok) { showSync('保存できませんでした', true); if (res.error === 'pass') openGate('合言葉を入れ直してください。'); return; }
+    if (!pending) { state = res.state || {}; render(); }
+    showSync(DEMO || !API ? syncText() : '保存しました ' + hhmm());
+  } catch (e) {
+    pending--;
+    showSync('保存できませんでした。つながりを確かめてください', true);
+  }
+}
+
+// ---- 表示 ----
+function buildStatic() {
+  $('grades').innerHTML = GRADES.map((g) => `
+    <div class="card grade">
+      <div class="head"><span class="g">${g.name}</span><span class="when">${g.when}</span></div>
+      <div class="bar"><i id="bar${g.k}"></i></div>
+      <div class="count"><b id="cnt${g.k}">0</b>/ ${STEPS.length} すんだ</div>
+      <div class="who">
+        <span>作成</span><input class="field" data-key="n:${g.k}:make" maxlength="20" placeholder="名前">
+        <span>確認</span><input class="field" data-key="n:${g.k}:check" maxlength="20" placeholder="名前">
+      </div>
+    </div>`).join('');
+
+  let html = '<div class="row headrow en"><span>DATE</span><span>TODO</span>' +
+    GRADES.map((g) => `<span>${g.name}</span>`).join('') + '</div>';
+  STEPS.forEach((st, i) => {
+    html += `<div class="row${st.final ? ' final' : ''}">
+      <div class="date">${st.d}</div>
+      <div class="what"><b>${st.t}</b><small>${st.s}</small></div>` +
+      GRADES.map((g) => `<button class="cell" type="button" data-cell="c:${i}:${g.k}" data-per="${st.per ? st.per[g.k] : ''}" data-gl="${g.name}"></button>`).join('') +
+      '</div>';
+  });
+  $('steps').innerHTML = html;
+
+  document.querySelectorAll('[data-cell]').forEach((b) => b.addEventListener('click', () => {
+    const key = b.dataset.cell;
+    if (state[key]) save(key, null);
+    else save(key, { by: me, at: today() });
+  }));
+  document.querySelectorAll('input[data-key], textarea[data-key]').forEach((f) =>
+    f.addEventListener('change', () => save(f.dataset.key, f.value.trim())));
+}
+const today = () => { const d = new Date(); return (d.getMonth() + 1) + '/' + d.getDate(); };
+
+function render() {
+  $('meName').textContent = me ? me + ' 先生' : '';
+  document.querySelectorAll('[data-cell]').forEach((b) => {
+    const v = state[b.dataset.cell];
+    const per = b.dataset.per ? `<span>${esc(b.dataset.per)}</span>` : '';
+    b.classList.toggle('done', !!v);
+    b.innerHTML = `<span class="gl">${esc(b.dataset.gl)}</span>` + (v
+      ? `<span class="mark">✓ すんだ</span><span>${esc(v.by || '')} ${esc(v.at || '')}</span>`
+      : per || '<span>まだ</span>');
+  });
+  GRADES.forEach((g) => {
+    const n = STEPS.filter((_, i) => state[`c:${i}:${g.k}`]).length;
+    $('cnt' + g.k).textContent = n;
+    $('bar' + g.k).style.width = (n / STEPS.length * 100) + '%';
+  });
+  document.querySelectorAll('input[data-key], textarea[data-key]').forEach((f) => {
+    if (f !== document.activeElement) f.value = state[f.dataset.key] || '';
+  });
+}
+
+// ---- はじめの画面 ----
+function openGate(msg) {
+  $('gName').value = me;
+  $('gPassWrap').style.display = API ? '' : 'none';
+  $('gPass').required = !!API;
+  $('gMsg').textContent = msg || '';
+  $('gate').classList.add('on');
+  $('gName').focus();
+}
+$('btnName').addEventListener('click', () => openGate(''));
+$('gateForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  me = $('gName').value.trim();
+  if (API) pass = $('gPass').value.trim() || pass;
+  if (API) {
+    try {
+      const res = await call({ op: 'get' });
+      if (!res.ok) { $('gMsg').textContent = '合言葉がちがいます。'; return; }
+    } catch (err) { $('gMsg').textContent = 'つながりません。少しあとでもう一度。'; return; }
+  }
+  lsSet('tt_me', me);
+  lsSet('tt_pass', pass);
+  $('gate').classList.remove('on');
+  refresh();
+});
+
+buildStatic();
+render();
+if (DEMO) { me = '新井'; refresh(); }
+else if (!me || (API && !pass)) openGate('');
+else refresh();
+setInterval(() => { if (API && !DEMO && !document.hidden) refresh(); }, 20000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+</script>
+</body>
+</html>
